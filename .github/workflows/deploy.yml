@@ -1,11 +1,11 @@
-name: Deploy to Staging
+name: Deploy to Production
 
 on:
   push:
     branches: [ master ]
 
 jobs:
-  deploy:
+  deploy-staging:
     runs-on: ubuntu-latest
     environment: Staging
 
@@ -13,7 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy
-        run: |
-          echo "Deploying to Staging environment..."
-          echo "Deploy successful!"
+      - name: Deploy to Staging
+        run: echo "Deploying to Staging!"
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    environment: Production
+    needs: deploy-staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Production
+        run: echo "Deploying to Production!"
