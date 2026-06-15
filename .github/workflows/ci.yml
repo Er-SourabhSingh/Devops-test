@@ -1,0 +1,24 @@
+name: CI Build
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Validate HTML file exists
+        run: |
+          echo "Checking HTML file..."
+          ls -la Index.html
+          echo "HTML file found successfully!"
+
+      - name: Build complete
+        run: echo "Build passed for Devops-Setting project!"
