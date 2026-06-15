@@ -1,2 +1,2 @@
 # Devops-Setting
-test
+test build
