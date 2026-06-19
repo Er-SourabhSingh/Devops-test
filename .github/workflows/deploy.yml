@@ -1,29 +1,25 @@
-name: Deploy to Production
-
+name: Deploy
 on:
-  push:
-    branches: [ master ]
-
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        default: 'production'
+      action:
+        required: false
+        default: 'deploy'
+      rollback_reason:
+        required: false
+        default: ''
 jobs:
-  deploy-staging:
+  deploy:
     runs-on: ubuntu-latest
-    environment: Staging
-
+    environment: ${{ github.event.inputs.environment }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Staging
-        run: echo "Deploying to Staging!"
-
-  deploy-production:
-    runs-on: ubuntu-latest
-    environment: Production
-    needs: deploy-staging
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Deploy to Production
-        run: echo "Deploying to Production!"
+      - uses: actions/checkout@v3
+      - name: Deploy or Rollback
+        run: |
+          echo "Action: ${{ github.event.inputs.action }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Rollback reason: ${{ github.event.inputs.rollback_reason }}"
+          echo "Deployment complete!"
