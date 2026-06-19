@@ -1,37 +1,39 @@
 name: Deploy
 
 on:
-  push:
-    branches: [master]
+push:
+branches: [master]
 
-  workflow_dispatch:
-    inputs:
-      environment:
-        required: true
-        default: production
-      action:
-        required: false
-        default: deploy
-      rollback_reason:
-        required: false
-        default: ''
+workflow_dispatch:
+inputs:
+environment:
+required: true
+default: production
+action:
+required: false
+default: deploy
+rollback_reason:
+required: false
+default: ''
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
+deploy:
+runs-on: ubuntu-latest
+environment: ${{ github.event.inputs.environment }}
 
-    steps:
-      - uses: actions/checkout@v3
+```
+steps:
+  - uses: actions/checkout@v3
 
-      - name: Deploy or Rollback
-        run: |
-          echo "Action: ${{ github.event.inputs.action }}"
-          echo "Environment: ${{ github.event.inputs.environment }}"
-          echo "Rollback reason: ${{ github.event.inputs.rollback_reason }}"
-          echo "Starting deployment..."
+  - name: Deploy or Rollback
+    run: |
+      echo "Action: ${{ github.event.inputs.action }}"
+      echo "Environment: ${{ github.event.inputs.environment }}"
+      echo "Rollback reason: ${{ github.event.inputs.rollback_reason }}"
 
-          # Intentionally fail deployment
-          exit 1
+      echo "Starting deployment..."
+      sleep 10
 
-          echo "Deployment complete!"
+      echo "Deployment completed successfully"
+      exit 0
+```
