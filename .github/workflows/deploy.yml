@@ -1,31 +1,29 @@
-name: Deploy
+name: Test Deployment Failure
+
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        required: true
-        default: 'production'
-      action:
-        required: false
-        default: 'deploy'
-      rollback_reason:
-        required: false
-        default: ''
+push:
+branches:
+- main
+
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment }}
-    steps:
-      - uses: actions/checkout@v3
-      - name: Validate Inputs
-        run: |
-          if [ "${{ github.event.inputs.action }}" == "rollback" ] && [ -z "${{ github.event.inputs.rollback_reason }}" ]; then
-            echo "❌ Error: Rollback action requires a rollback_reason"
-            exit 1
-          fi
-      - name: Deploy or Rollback
-        run: |
-          echo "Action: ${{ github.event.inputs.action }}"
-          echo "Environment: ${{ github.event.inputs.environment }}"
-          echo "Rollback reason: ${{ github.event.inputs.rollback_reason }}"
-          echo "Deployment complete!"
+deploy:
+runs-on: ubuntu-latest
+
+```
+steps:
+  - name: Checkout Code
+    uses: actions/checkout@v4
+
+  - name: Build Application
+    run: |
+      echo "Building application..."
+      echo "Build completed."
+
+  - name: Deploy Application
+    run: |
+      echo "Starting deployment..."
+      exit 1
+
+  - name: This Step Will Never Run
+    run: echo "Deployment successful"
+```
