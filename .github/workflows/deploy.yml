@@ -1,29 +1,37 @@
-name: Test Deployment Failure
+name: Deploy
 
 on:
-push:
-branches:
-- main
+  push:
+    branches: [master]
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        default: production
+      action:
+        required: false
+        default: deploy
+      rollback_reason:
+        required: false
+        default: ''
 
 jobs:
-deploy:
-runs-on: ubuntu-latest
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment }}
 
-```
-steps:
-  - name: Checkout Code
-    uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v3
 
-  - name: Build Application
-    run: |
-      echo "Building application..."
-      echo "Build completed."
+      - name: Deploy or Rollback
+        run: |
+          echo "Action: ${{ github.event.inputs.action }}"
+          echo "Environment: ${{ github.event.inputs.environment }}"
+          echo "Rollback reason: ${{ github.event.inputs.rollback_reason }}"
+          echo "Starting deployment..."
 
-  - name: Deploy Application
-    run: |
-      echo "Starting deployment..."
-      exit 1
+          # Intentionally fail deployment
+          exit 1
 
-  - name: This Step Will Never Run
-    run: echo "Deployment successful"
-```
+          echo "Deployment complete!"
